@@ -1,9 +1,18 @@
 const grid = document.querySelector(".grid");
 const blockWidth = 100;
 const blockHeight = 20;
-const userStart = [230, 10];
 const boardWidth = 560;
+const ballDiameter = [20, 20];
+let xDirection = 2;
+let yDirection = 2;
+
+const userStart = [230, 10];
 let currentPosition = userStart;
+
+const ballStart = [230, 40];
+let ballCurrent = ballStart;
+
+let timerId;
 //creare block
 class Block {
   constructor(xAxis, yAxis) {
@@ -62,6 +71,12 @@ function drawUser() {
   user.style.bottom = currentPosition[1] + "px";
 }
 
+//draw the ball
+function drawBall() {
+  ball.style.left = ballCurrent[0] + "px";
+  ball.style.bottom = ballCurrent[1] + "px";
+}
+
 //move user
 
 function moveUser(e) {
@@ -91,3 +106,30 @@ document.addEventListener("keydown", moveUser);
 
 const ball = document.createElement("div");
 ball.classList.add("ball");
+grid.append(ball);
+drawBall();
+
+// Move the ball
+
+function MoveBall() {
+  ballCurrent[0] += xDirection;
+  ballCurrent[1] += yDirection;
+  drawBall();
+  checkForCollisions();
+}
+
+timerId = setInterval(MoveBall, 30);
+
+function checkForCollisions() {
+  //check for wal collisions
+  if (ballCurrent[0] >= boardWidth - ballDiameter) {
+    changeDirection();
+  }
+}
+
+function changeDirection() {
+  if (xDirection === 2 && yDirection == 2) {
+    yDirection -= 2;
+    return;
+  }
+}
