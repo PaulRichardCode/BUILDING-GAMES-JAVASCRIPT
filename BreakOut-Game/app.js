@@ -1,10 +1,13 @@
 const grid = document.querySelector(".grid");
+const scoreDisplay = document.querySelector("#score");
 const blockWidth = 100;
 const blockHeight = 20;
 const boardWidth = 560;
+const boardHeight = 300;
 const ballDiameter = [20, 20];
-let xDirection = 2;
+let xDirection = -2;
 let yDirection = 2;
+let score = 0;
 
 const userStart = [230, 10];
 let currentPosition = userStart;
@@ -121,15 +124,63 @@ function MoveBall() {
 timerId = setInterval(MoveBall, 30);
 
 function checkForCollisions() {
+  //check for block colltions
+
+  for (let i = 0; i < blocks.length; i++) {
+    if (
+      ballCurrent[0] > blocks[i].bottomLeft[0] &&
+      ballCurrent[0] < blocks[i].bottomRight[0] &&
+      ballCurrent[1] + ballDiameter[0] > blocks[i].bottomLeft[1] &&
+      ballCurrent[1] < blocks[i].topLeft[1]
+    ) {
+      const allBlocks = Array.from(document.querySelectorAll(".block"));
+      allBlocks[i].classList.remove("block");
+      blocks.splice(i, 1);
+      changeDirection();
+      score++;
+      scoreDisplay.innerHTML = score;
+    }
+  }
+
   //check for wal collisions
-  if (ballCurrent[0] >= boardWidth - ballDiameter) {
+  if (
+    ballCurrent[0] >= boardWidth - ballDiameter[0] ||
+    ballCurrent[1] >= boardHeight - ballDiameter[1] ||
+    ballCurrent[0] <= 0
+  ) {
     changeDirection();
+  }
+
+  //check for user collitions
+  if (
+    ballCurrent[0] > currentPosition[0] &&
+    ballCurrent[0] < currentPosition[0] + blockWidth &&
+    ballCurrent[1] > currentPosition[1] &&
+    ballCurrent[1] < currentPosition[1] + blockHeight
+  ) {
+    changeDirection();
+  }
+
+  //check for gameover
+  if (ballCurrent[1] <= 0) {
+    clearInterval(timerId);
+    scoreDisplay.innerHTML = "You lose";
+    document.removeEventListener("keydown", moveUser);
   }
 }
 
 function changeDirection() {
-  if (xDirection === 2 && yDirection == 2) {
-    yDirection -= 2;
+  if (xDirection === 2 && yDirection === 2) {
+    yDirection = -2;
+    return;
+  } else if (xDirection === 2 && yDirection === -2) {
+    xDirection = -2;
+    return;
+  } else if (xDirection === -2 && yDirection === -2) {
+    yDirection = 2;
+    return;
+  } else if (xDirection === -2 && yDirection === 2) {
+    xDirection = 2;
     return;
   }
 }
