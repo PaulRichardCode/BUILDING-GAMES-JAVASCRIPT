@@ -45,7 +45,7 @@ const cardArray = [
     img: "img/ice cream.jpg",
   },
 ];
-
+/* 
 cardArray.sort(() => 0.5 - Math.random());
 
 const grid = document.querySelector("#grid");
@@ -101,10 +101,45 @@ function flipCard() {
   const cardId = this.getAttribute("data-id");
   cardChoosen.push(cardArray[cardId].name);
   cardChoosenId.push(cardId);
-  /*   console.log(cardChoosenId); */
+  /*   console.log(cardChoosenId); 
   console.log(cardChoosen);
   this.setAttribute("src", cardArray[cardId].img);
   if (cardChoosen.length === 2) {
     setTimeout(checkMatch, 500);
   }
 }
+ */
+
+const grid = document.querySelector("#grid");
+const cardChosen = [];
+
+/* function images() {
+  for (let i = 1; i < cardArray.length; i++) {
+    const img = document.createElement("img");
+    img.setAttribute("src", "img/blank.jpg");
+    grid.appendChild(img);
+    img.addEventListener("click", flipOut);
+    img.setAttribute("data-id", i);
+  }
+}
+images();
+
+function flipOut() {
+  const cardId = this.getAttribute("data-id");
+  cardChosen.push(cardArray[cardId].name);
+  console.log(cardChosen);
+
+  this.setAttribute("src", cardArray[cardId].img);
+  if (cardChosen.length === 2) {
+    setTimeout(checkMatch, 2000);
+  }
+}
+
+function checkMatch() {
+  if (cardChosen[0] === cardChosen[1]) {
+    alert("you ve won");
+  } else {
+    
+  }
+}
+ */
